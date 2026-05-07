@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Iniciar sesion{% endblock %}
+
+{% block content %}
+<section class="card auth-card">
+    <div>
+        <p class="eyebrow">Acceso</p>
+        <h2>Ingresa al sistema</h2>
+        <p>Usa un usuario con rol docente o administrador para gestionar las reservas.</p>
+    </div>
+    <form method="post" class="form-grid">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div>
+            <label for="{{ form.username.id_for_label }}">Usuario</label>
+            {{ form.username }}
+        </div>
+        <div>
+            <label for="{{ form.password.id_for_label }}">Contrasena</label>
+            {{ form.password }}
+        </div>
+        <button type="submit" class="btn btn-primary">Entrar</button>
+    </form>
+</section>
+{% endblock %}
