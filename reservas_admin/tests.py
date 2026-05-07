@@ -1,8 +1,7 @@
+from django.test import Client,TestCase
 from datetime import date, time
-
 from django.contrib.auth.models import Group, User
 from django.core.exceptions import ValidationError
-from django.test import Client, TestCase
 from django.urls import reverse
 
 from .models import Reserva
@@ -56,3 +55,4 @@ class ReservaViewsTest(TestCase):
         )
         self.assertRedirects(response, reverse('reserva_lista'))
         self.assertEqual(Reserva.objects.count(), 1)
+

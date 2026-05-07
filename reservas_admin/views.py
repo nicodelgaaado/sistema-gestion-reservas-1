@@ -45,9 +45,7 @@ class AdministradorRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
 
 class RolSistemaRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
     def test_func(self):
-        return usuario_es_docente(self.request.user) or usuario_es_administrador(
-            self.request.user
-        )
+        return usuario_es_docente(self.request.user) or usuario_es_administrador(self.request.user)
 
 
 class ReservaQuerysetMixin(RolSistemaRequiredMixin):
@@ -164,7 +162,7 @@ class ExportarReservasCSVView(ReservaQuerysetMixin, View):
     def get(self, request, *args, **kwargs):
         queryset = self.get_filtered_queryset()
         response = HttpResponse(content_type='text/csv')
-        response['Content-Disposition'] = 'attachment; filename=\"reservas.csv\"'
+        response['Content-Disposition'] = 'attachment; filename="reservas.csv"'
 
         writer = csv.writer(response)
         writer.writerow(
