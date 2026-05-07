@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Cambiar estado{% endblock %}
+
+{% block content %}
+<section class="card form-card">
+    <div class="card-heading">
+        <span class="section-tag">Administracion</span>
+        <h2>Actualizar estado de la reserva</h2>
+        <p>{{ object.usuario.username }} solicito {{ object.laboratorio }} el {{ object.fecha }} de {{ object.hora_inicio }} a {{ object.hora_fin }}.</p>
+    </div>
+    <form method="post" class="form-grid">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="field">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+            </div>
+        {% endfor %}
+        <div class="form-actions">
+            <a class="btn btn-secondary" href="{% url 'reserva_lista' %}">Volver</a>
+            <button type="submit" class="btn btn-primary">Actualizar</button>
+        </div>
+    </form>
+</section>
+{% endblock %}

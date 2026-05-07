@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% block title %}Inicio{% endblock %}
+
+{% block content %}
+<section class="hero-panel">
+    <div class="hero-copy-block">
+        <span class="section-tag">Centro de control</span>
+        <h1>Reserva, supervisa y organiza laboratorios desde una sola interfaz.</h1>
+        <p>
+            Un flujo claro para docentes y administradores: solicitudes, aprobaciones,
+            estado de reservas y exportacion operativa sin perder trazabilidad.
+        </p>
+        <div class="hero-actions">
+            {% if user.is_authenticated %}
+                <a class="btn btn-primary" href="{% url 'reserva_lista' %}">Abrir panel de reservas</a>
+                {% if es_docente %}
+                    <a class="btn btn-secondary" href="{% url 'reserva_crear' %}">Crear nueva reserva</a>
+                {% endif %}
+            {% else %}
+                <a class="btn btn-primary" href="{% url 'login' %}">Iniciar sesion</a>
+                <a class="btn btn-secondary" href="{% url 'reserva_lista' %}">Ver estructura del sistema</a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="hero-preview card">
+        <div class="hero-preview-header">
+            <span>Estado general</span>
+            <strong>Operacion academica</strong>
+        </div>
+        <div class="metric-grid">
+            <article class="metric-card">
+                <span>Total reservas</span>
+                <strong>{{ total_reservas }}</strong>
+            </article>
+            <article class="metric-card">
+                <span>Pendientes</span>
+                <strong>{{ reservas_pendientes }}</strong>
+            </article>
+            <article class="metric-card">
+                <span>Aprobadas</span>
+                <strong>{{ reservas_aprobadas }}</strong>
+            </article>
+            <article class="metric-card">
+                <span>Laboratorios</span>
+                <strong>{{ laboratorios_activos }}</strong>
+            </article>
+        </div>
+    </div>
+</section>
+
+<section class="section-stack">
+    <div class="section-heading">
+        <span class="section-tag">Mapa del sistema</span>
+        <h2>Indice rapido de paginas y acciones disponibles</h2>
+        <p>Accede a cada flujo principal desde un solo lugar y mantén una navegación clara.</p>
+    </div>
+
+    <div class="feature-grid">
+        <article class="feature-card card">
+            <div class="feature-icon">01</div>
+            <h3>Inicio de sesion</h3>
+            <p>Entrada segura para docentes y administradores con acceso según rol.</p>
+            <a href="{% url 'login' %}">Ir a autenticacion</a>
+        </article>
+        <article class="feature-card card">
+            <div class="feature-icon">02</div>
+            <h3>Panel de reservas</h3>
+            <p>Consulta reservas, filtra por fecha o laboratorio y exporta el resultado.</p>
+            <a href="{% url 'reserva_lista' %}">Abrir panel</a>
+        </article>
+        <article class="feature-card card">
+            <div class="feature-icon">03</div>
+            <h3>Nueva solicitud</h3>
+            <p>Registra reservas con horarios validados y control de conflictos.</p>
+            {% if es_docente %}
+                <a href="{% url 'reserva_crear' %}">Crear reserva</a>
+            {% elif user.is_authenticated %}
+                <span>Disponible solo para docentes</span>
+            {% else %}
+                <a href="{% url 'login' %}">Inicia sesion para continuar</a>
+            {% endif %}
+        </article>
+        <article class="feature-card card">
+            <div class="feature-icon">04</div>
+            <h3>Backoffice docente</h3>
+            <p>Edita o elimina reservas pendientes conservando reglas de negocio.</p>
+            <a href="{% url 'reserva_lista' %}">Revisar solicitudes</a>
+        </article>
+    </div>
+</section>
+
+<section class="section-stack">
+    <div class="section-heading">
+        <span class="section-tag">Flujo operativo</span>
+        <h2>Como se mueve una reserva dentro del sistema</h2>
+    </div>
+    <div class="timeline-grid">
+        <article class="timeline-step card">
+            <strong>1. Solicitud</strong>
+            <p>El docente crea la reserva y define laboratorio, fecha, horario y motivo.</p>
+        </article>
+        <article class="timeline-step card">
+            <strong>2. Revision</strong>
+            <p>El administrador valida disponibilidad y decide aprobar o rechazar.</p>
+        </article>
+        <article class="timeline-step card">
+            <strong>3. Seguimiento</strong>
+            <p>Las reservas quedan visibles en el panel con filtros, estados y exportacion.</p>
+        </article>
+    </div>
+</section>
+{% endblock %}

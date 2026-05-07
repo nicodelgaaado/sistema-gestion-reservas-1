@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+
+{% block title %}Reservas{% endblock %}
+
+{% block content %}
+<section class="page-intro">
+    <div class="section-heading">
+        <span class="section-tag">Panel operativo</span>
+        <h1>Reservas registradas</h1>
+        <p>Visualiza el historial operativo, aplica filtros y toma decisiones sin salir del panel.</p>
+    </div>
+    <div class="toolbar-actions">
+        {% if es_docente %}
+            <a class="btn btn-primary" href="{% url 'reserva_crear' %}">Nueva reserva</a>
+        {% endif %}
+        <a class="btn btn-secondary" href="{% url 'reserva_exportar_csv' %}?{{ request.GET.urlencode }}">Exportar CSV</a>
+    </div>
+</section>
+
+<section class="stats-band">
+    <article class="metric-card card">
+        <span>Total visible</span>
+        <strong>{{ total_reservas }}</strong>
+    </article>
+    {% for item in estadisticas_estado %}
+        <article class="metric-card card">
+            <span>{{ item.estado|title }}</span>
+            <strong>{{ item.total }}</strong>
+        </article>
+    {% empty %}
+        <article class="metric-card card">
+            <span>Estados</span>
+            <strong>0</strong>
+        </article>
+    {% endfor %}
+</section>
+
+<section class="content-grid">
+    <article class="card sidebar-card">
+        <div class="card-heading">
+            <h3>Filtros</h3>
+            <p>Refina el listado para revisar disponibilidad y estados.</p>
+        </div>
+        <form method="get" class="form-grid">
+            <div class="field">
+                <label for="{{ filtro_form.fecha.id_for_label }}">Fecha</label>
+                {{ filtro_form.fecha }}
+            </div>
+            <div class="field">
+                <label for="{{ filtro_form.laboratorio.id_for_label }}">Laboratorio</label>
+                {{ filtro_form.laboratorio }}
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Filtrar</button>
+                <a class="btn btn-secondary" href="{% url 'reserva_lista' %}">Limpiar</a>
+            </div>
+        </form>
+    </article>
+
+    <article class="card">
+        <div class="card-heading">
+            <h3>Resumen analitico</h3>
+            <p>Lectura rapida del comportamiento por laboratorio y estado.</p>
+        </div>
+        <div class="stats">
+            <div>
+                <h4>Uso por laboratorio</h4>
+                {% for item in estadisticas_laboratorio %}
+                    <div class="stat-row">
+                        <span>{{ item.laboratorio }}</span>
+                        <strong>{{ item.total }}</strong>
+                    </div>
+                {% empty %}
+                    <p>No hay datos para mostrar.</p>
+                {% endfor %}
+            </div>
+            <div>
+                <h4>Estados</h4>
+                {% for item in estadisticas_estado %}
+                    <div class="stat-row">
+                        <span>{{ item.estado|title }}</span>
+                        <strong>{{ item.total }}</strong>
+                    </div>
+                {% empty %}
+                    <p>No hay datos para mostrar.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </article>
+</section>
+
+<section class="card">
+    <div class="card-heading card-heading-inline">
+        <div>
+            <h3>Listado de reservas</h3>
+            <p>Consulta cada solicitud con su horario, estado y acciones disponibles.</p>
+        </div>
+    </div>
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Usuario</th>
+                    <th>Laboratorio</th>
+                    <th>Fecha</th>
+                    <th>Hora inicio</th>
+                    <th>Hora fin</th>
+                    <th>Estado</th>
+                    <th>Motivo</th>
+                    <th>Fecha de registro</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reserva in reservas %}
+                    <tr>
+                        <td>{{ reserva.usuario.username }}</td>
+                        <td>{{ reserva.laboratorio }}</td>
+                        <td>{{ reserva.fecha }}</td>
+                        <td>{{ reserva.hora_inicio }}</td>
+                        <td>{{ reserva.hora_fin }}</td>
+                        <td><span class="badge badge-{{ reserva.estado }}">{{ reserva.get_estado_display }}</span></td>
+                        <td>{{ reserva.motivo }}</td>
+                        <td>{{ reserva.fecha_creacion|date:"Y-m-d H:i" }}</td>
+                        <td class="actions">
+                            {% if reserva.puede_editarse and reserva.usuario == user %}
+                                <a href="{% url 'reserva_editar' reserva.pk %}">Editar</a>
+                                <a href="{% url 'reserva_eliminar' reserva.pk %}">Eliminar</a>
+                            {% endif %}
+                            {% if es_administrador %}
+                                <a href="{% url 'reserva_estado' reserva.pk %}">Cambiar estado</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="9">No se encontraron reservas con los filtros actuales.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

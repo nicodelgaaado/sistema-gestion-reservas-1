@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Gestion de Reservas{% endblock %}</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <div class="app-shell">
+        <header class="topbar">
+            <a class="brand" href="{% url 'inicio' %}">
+                <span class="brand-mark">GR</span>
+                <span>
+                    <strong>Gestion Reservas</strong>
+                    <small>Laboratorios academicos</small>
+                </span>
+            </a>
+            <nav class="nav-links">
+                <a class="{% if request.path == '/' %}is-active{% endif %}" href="{% url 'inicio' %}">Inicio</a>
+                <a class="{% if '/reservas/' in request.path and '/nueva/' not in request.path %}is-active{% endif %}" href="{% url 'reserva_lista' %}">Reservas</a>
+                {% if es_docente %}
+                    <a class="{% if request.path == '/reservas/nueva/' %}is-active{% endif %}" href="{% url 'reserva_crear' %}">Nueva solicitud</a>
+                {% endif %}
+            </nav>
+            <div class="topbar-actions">
+                {% if user.is_authenticated %}
+                    <div class="user-chip">
+                        <span class="status-dot"></span>
+                        <span>{{ user.username }}</span>
+                    </div>
+                    <form method="post" action="{% url 'logout' %}" class="logout-form">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-secondary">Cerrar sesion</button>
+                    </form>
+                {% else %}
+                    <a class="btn btn-primary" href="{% url 'login' %}">Ingresar</a>
+                {% endif %}
+            </div>
+        </header>
+
+        <main class="page-shell">
+            {% if messages %}
+                <section class="messages">
+                    {% for message in messages %}
+                        <article class="message {{ message.tags }}">{{ message }}</article>
+                    {% endfor %}
+                </section>
+            {% endif %}
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+</body>
+</html>

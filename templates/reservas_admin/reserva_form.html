@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Formulario de reserva{% endblock %}
+
+{% block content %}
+<section class="card form-card">
+    <div class="card-heading">
+        <span class="section-tag">Reserva</span>
+        <h2>{% if view.object %}Editar reserva{% else %}Nueva reserva{% endif %}</h2>
+        <p>Solo se permiten cambios mientras la solicitud este en estado pendiente.</p>
+    </div>
+    <form method="post" class="form-grid">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        {% for field in form %}
+            <div class="field">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                    <small class="error">{{ field.errors|join:', ' }}</small>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <div class="form-actions">
+            <a class="btn btn-secondary" href="{% url 'reserva_lista' %}">Volver</a>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+    </form>
+</section>
+{% endblock %}
