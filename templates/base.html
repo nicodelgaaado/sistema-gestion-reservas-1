@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Gestion de Reservas{% endblock %}</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header class="hero">
+        <div>
+            <p class="eyebrow">Ejercicio 1 - Django</p>
+            <h1>Sistema de Gestion de Reservas de Laboratorios</h1>
+            <p class="hero-copy">Controla reservas, roles, aprobaciones y reportes en una sola vista de trabajo.</p>
+        </div>
+        {% if user.is_authenticated %}
+            <div class="user-box">
+                <span>{{ user.username }}</span>
+                <a class="btn btn-light" href="{% url 'logout' %}">Cerrar sesion</a>
+            </div>
+        {% endif %}
+    </header>
+
+    <main class="page-shell">
+        {% if messages %}
+            <section class="messages">
+                {% for message in messages %}
+                    <article class="message {{ message.tags }}">{{ message }}</article>
+                {% endfor %}
+            </section>
+        {% endif %}
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>
