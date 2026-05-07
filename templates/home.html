@@ -73,7 +73,13 @@
             <div class="feature-icon">03</div>
             <h3>Nueva solicitud</h3>
             <p>Registra reservas con horarios validados y control de conflictos.</p>
-            <a href="{% url 'reserva_crear' %}">Crear reserva</a>
+            {% if es_docente %}
+                <a href="{% url 'reserva_crear' %}">Crear reserva</a>
+            {% elif user.is_authenticated %}
+                <span>Disponible solo para docentes</span>
+            {% else %}
+                <a href="{% url 'login' %}">Inicia sesion para continuar</a>
+            {% endif %}
         </article>
         <article class="feature-card card">
             <div class="feature-icon">04</div>

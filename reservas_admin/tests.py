@@ -2,6 +2,7 @@ from django.test import Client,TestCase
 from datetime import date, time
 from django.contrib.auth.models import Group, User
 from django.core.exceptions import ValidationError
+from django.contrib.messages import get_messages
 from django.urls import reverse
 
 from .models import Reserva
@@ -37,8 +38,11 @@ class ReservaModelTest(TestCase):
 class ReservaViewsTest(TestCase):
     def setUp(self):
         self.docentes = Group.objects.get(name='Docente')
+        self.administradores = Group.objects.get(name='Administrador')
         self.usuario = User.objects.create_user(username='docente', password='clave12345')
         self.usuario.groups.add(self.docentes)
+        self.admin = User.objects.create_user(username='admin', password='Admin12345')
+        self.admin.groups.add(self.administradores)
         self.client = Client()
 
     def test_docente_puede_crear_reserva(self):
@@ -55,4 +59,11 @@ class ReservaViewsTest(TestCase):
         )
         self.assertRedirects(response, reverse('reserva_lista'))
         self.assertEqual(Reserva.objects.count(), 1)
+
+    def test_administrador_no_puede_abrir_formulario_de_creacion(self):
+        self.client.login(username='admin', password='Admin12345')
+        response = self.client.get(reverse('reserva_crear'), follow=True)
+        self.assertRedirects(response, reverse('inicio'))
+        mensajes = [message.message for message in get_messages(response.wsgi_request)]
+        self.assertIn('Solo los docentes pueden crear o gestionar sus solicitudes.', mensajes)
 
