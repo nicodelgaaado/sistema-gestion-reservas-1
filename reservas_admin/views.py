@@ -24,6 +24,17 @@ def usuario_es_docente(user):
     return user.is_authenticated and user.groups.filter(name='Docente').exists()
 
 
+class RolRequeridoMixin(LoginRequiredMixin, UserPassesTestMixin):
+    mensaje_permiso = 'No tienes permisos para acceder a esta seccion.'
+
+    def handle_no_permission(self):
+        if not self.request.user.is_authenticated:
+            return super().handle_no_permission()
+
+        messages.error(self.request, self.mensaje_permiso)
+        return redirect('inicio')
+
+
 class InicioSesionView(LoginView):
     template_name = 'registration/login.html'
     redirect_authenticated_user = True
@@ -58,17 +69,23 @@ class CierreSesionView(LogoutView):
     next_page = reverse_lazy('login')
 
 
-class DocenteRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
+class DocenteRequiredMixin(RolRequeridoMixin):
+    mensaje_permiso = 'Solo los docentes pueden crear o gestionar sus solicitudes.'
+
     def test_func(self):
         return usuario_es_docente(self.request.user)
 
 
-class AdministradorRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
+class AdministradorRequiredMixin(RolRequeridoMixin):
+    mensaje_permiso = 'Solo los administradores pueden actualizar el estado de las reservas.'
+
     def test_func(self):
         return usuario_es_administrador(self.request.user)
 
 
-class RolSistemaRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
+class RolSistemaRequiredMixin(RolRequeridoMixin):
+    mensaje_permiso = 'Debes iniciar sesion con un rol valido para acceder al sistema.'
+
     def test_func(self):
         return usuario_es_docente(self.request.user) or usuario_es_administrador(self.request.user)
 
