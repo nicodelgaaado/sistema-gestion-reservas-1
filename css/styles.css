@@ -1,0 +1,261 @@
+:root {
+    --bg: #f4efe6;
+    --surface: #fffdf9;
+    --surface-strong: #112d32;
+    --primary: #ba4a00;
+    --primary-dark: #8c2f00;
+    --secondary: #d8c3a5;
+    --text: #1d2528;
+    --muted: #617076;
+    --danger: #992b1e;
+    --success: #1f6d52;
+    --warning: #8a6700;
+    --border: #dccfbe;
+    --shadow: 0 24px 60px rgba(17, 45, 50, 0.12);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Manrope', sans-serif;
+    background:
+        radial-gradient(circle at top left, rgba(186, 74, 0, 0.18), transparent 24%),
+        linear-gradient(180deg, #f7f1e7 0%, #f4efe6 100%);
+    color: var(--text);
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    background: #fff;
+    font: inherit;
+}
+
+.hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    padding: 3rem 6vw;
+    background: linear-gradient(135deg, #112d32 0%, #1d4b53 100%);
+    color: #fff8f1;
+}
+
+.hero h1 {
+    margin: 0.4rem 0;
+    font-size: clamp(2rem, 4vw, 3.8rem);
+    max-width: 12ch;
+}
+
+.hero-copy,
+.eyebrow {
+    margin: 0;
+}
+
+.eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 0.78rem;
+    color: #ffd3b8;
+}
+
+.user-box {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.page-shell {
+    width: min(1180px, 92vw);
+    margin: -2rem auto 3rem;
+}
+
+.card {
+    padding: 1.6rem;
+    background: var(--surface);
+    border: 1px solid rgba(220, 207, 190, 0.8);
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+}
+
+.compact {
+    padding: 1.3rem;
+}
+
+.toolbar,
+.grid-2 {
+    display: grid;
+    gap: 1.25rem;
+    margin-bottom: 1.25rem;
+}
+
+.toolbar {
+    grid-template-columns: 1.3fr auto;
+    align-items: center;
+}
+
+.toolbar-actions,
+.form-actions,
+.form-inline,
+.actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.grid-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.stats {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.85rem 1.1rem;
+    border-radius: 999px;
+    border: 0;
+    font-weight: 800;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: #fff;
+}
+
+.btn-secondary {
+    background: var(--secondary);
+    color: #2d241a;
+}
+
+.btn-danger {
+    background: var(--danger);
+    color: #fff;
+}
+
+.btn-light {
+    background: rgba(255, 255, 255, 0.14);
+    color: #fff;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 1rem 0.8rem;
+    border-bottom: 1px solid #ede3d5;
+    text-align: left;
+    vertical-align: top;
+}
+
+th {
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.badge {
+    display: inline-block;
+    padding: 0.4rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.84rem;
+    font-weight: 800;
+}
+
+.badge-pendiente {
+    background: #fff2cb;
+    color: var(--warning);
+}
+
+.badge-aprobada {
+    background: #dbf5ea;
+    color: var(--success);
+}
+
+.badge-rechazada {
+    background: #fde2de;
+    color: var(--danger);
+}
+
+.auth-card,
+.form-card {
+    width: min(760px, 100%);
+    margin: 0 auto;
+}
+
+.form-grid {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.messages {
+    margin-bottom: 1rem;
+}
+
+.message {
+    padding: 1rem 1.2rem;
+    border-radius: 16px;
+    margin-bottom: 0.8rem;
+    background: #eaf4ef;
+}
+
+.message.error {
+    background: #fde2de;
+}
+
+.error {
+    display: block;
+    color: var(--danger);
+    margin-top: 0.35rem;
+}
+
+@media (max-width: 768px) {
+    .hero,
+    .toolbar,
+    .grid-2,
+    .stats {
+        grid-template-columns: 1fr;
+    }
+
+    .hero {
+        padding: 2rem 5vw 3rem;
+    }
+
+    .page-shell {
+        margin-top: -1.4rem;
+    }
+}

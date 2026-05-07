@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'reservas_admin.apps.ReservasAdminConfig',
 ]
 
 MIDDLEWARE = [
@@ -49,12 +50,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'gestion_reservas_admin.urls'
+ROOT_URLCONF = 'gestion_reservas_admin.gestion_reservas_admin.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR.parent / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -66,7 +67,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'gestion_reservas_admin.wsgi.application'
+WSGI_APPLICATION = 'gestion_reservas_admin.gestion_reservas_admin.wsgi.application'
 
 
 # Database
@@ -115,3 +116,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [BASE_DIR.parent / 'css']
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'reserva_lista'
+LOGOUT_REDIRECT_URL = 'login'
