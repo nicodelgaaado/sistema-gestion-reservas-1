@@ -49,7 +49,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'gestion_reservas_admin.urls'
+ROOT_URLCONF = 'gestion_reservas_admin.gestion_reservas_admin.urls'
 
 TEMPLATES = [
     {
@@ -66,7 +66,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'gestion_reservas_admin.wsgi.application'
+WSGI_APPLICATION = 'gestion_reservas_admin.gestion_reservas_admin.wsgi.application'
 
 
 # Database
