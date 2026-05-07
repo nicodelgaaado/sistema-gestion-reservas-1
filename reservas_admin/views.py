@@ -8,7 +8,7 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import CreateView, DeleteView, ListView, UpdateView
+from django.views.generic import CreateView, DeleteView, ListView, TemplateView, UpdateView
 
 from .forms import EstadoReservaForm, FiltroReservaForm, ReservaForm
 from .models import Reserva
@@ -27,6 +27,31 @@ def usuario_es_docente(user):
 class InicioSesionView(LoginView):
     template_name = 'registration/login.html'
     redirect_authenticated_user = True
+
+
+class InicioView(TemplateView):
+    template_name = 'home.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        total_reservas = Reserva.objects.count()
+        reservas_pendientes = Reserva.objects.filter(estado=Reserva.ESTADO_PENDIENTE).count()
+        reservas_aprobadas = Reserva.objects.filter(estado=Reserva.ESTADO_APROBADA).count()
+        laboratorios_activos = (
+            Reserva.objects.values('laboratorio').distinct().count()
+        )
+
+        context.update(
+            {
+                'total_reservas': total_reservas,
+                'reservas_pendientes': reservas_pendientes,
+                'reservas_aprobadas': reservas_aprobadas,
+                'laboratorios_activos': laboratorios_activos,
+                'es_administrador': usuario_es_administrador(self.request.user),
+                'es_docente': usuario_es_docente(self.request.user),
+            }
+        )
+        return context
 
 
 class CierreSesionView(LogoutView):

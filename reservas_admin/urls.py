@@ -4,6 +4,7 @@ from .views import (
     CambiarEstadoReservaView,
     CierreSesionView,
     ExportarReservasCSVView,
+    InicioView,
     InicioSesionView,
     ReservaCreateView,
     ReservaDeleteView,
@@ -12,6 +13,7 @@ from .views import (
 )
 
 urlpatterns = [
+    path('', InicioView.as_view(), name='inicio'),
     path('login/', InicioSesionView.as_view(), name='login'),
     path('logout/', CierreSesionView.as_view(), name='logout'),
     path('reservas/', ReservaListView.as_view(), name='reserva_lista'),

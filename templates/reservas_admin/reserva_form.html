@@ -4,8 +4,8 @@
 
 {% block content %}
 <section class="card form-card">
-    <div>
-        <p class="eyebrow">Reserva</p>
+    <div class="card-heading">
+        <span class="section-tag">Reserva</span>
         <h2>{% if view.object %}Editar reserva{% else %}Nueva reserva{% endif %}</h2>
         <p>Solo se permiten cambios mientras la solicitud este en estado pendiente.</p>
     </div>
@@ -13,7 +13,7 @@
         {% csrf_token %}
         {{ form.non_field_errors }}
         {% for field in form %}
-            <div>
+            <div class="field">
                 <label for="{{ field.id_for_label }}">{{ field.label }}</label>
                 {{ field }}
                 {% if field.errors %}
