@@ -103,9 +103,11 @@
                     <th>Usuario</th>
                     <th>Laboratorio</th>
                     <th>Fecha</th>
-                    <th>Horario</th>
+                    <th>Hora inicio</th>
+                    <th>Hora fin</th>
                     <th>Estado</th>
                     <th>Motivo</th>
+                    <th>Fecha de registro</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -115,9 +117,11 @@
                         <td>{{ reserva.usuario.username }}</td>
                         <td>{{ reserva.laboratorio }}</td>
                         <td>{{ reserva.fecha }}</td>
-                        <td>{{ reserva.hora_inicio }} - {{ reserva.hora_fin }}</td>
+                        <td>{{ reserva.hora_inicio }}</td>
+                        <td>{{ reserva.hora_fin }}</td>
                         <td><span class="badge badge-{{ reserva.estado }}">{{ reserva.get_estado_display }}</span></td>
                         <td>{{ reserva.motivo }}</td>
+                        <td>{{ reserva.fecha_creacion|date:"Y-m-d H:i" }}</td>
                         <td class="actions">
                             {% if reserva.puede_editarse and reserva.usuario == user %}
                                 <a href="{% url 'reserva_editar' reserva.pk %}">Editar</a>
@@ -130,7 +134,7 @@
                     </tr>
                 {% empty %}
                     <tr>
-                        <td colspan="7">No se encontraron reservas con los filtros actuales.</td>
+                        <td colspan="9">No se encontraron reservas con los filtros actuales.</td>
                     </tr>
                 {% endfor %}
             </tbody>
