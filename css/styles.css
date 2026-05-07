@@ -148,6 +148,10 @@ label {
     flex-wrap: wrap;
 }
 
+.logout-form {
+    margin: 0;
+}
+
 .nav-links a {
     padding: 0.65rem 0.9rem;
     border-radius: 999px;

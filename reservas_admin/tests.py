@@ -56,3 +56,8 @@ class ReservaViewsTest(TestCase):
         self.assertRedirects(response, reverse('reserva_lista'))
         self.assertEqual(Reserva.objects.count(), 1)
 
+    def test_cierre_de_sesion_por_post_redirige_a_login(self):
+        self.client.login(username='docente', password='clave12345')
+        response = self.client.post(reverse('logout'))
+        self.assertRedirects(response, reverse('login'))
+

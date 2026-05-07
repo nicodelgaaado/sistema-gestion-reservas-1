@@ -31,7 +31,10 @@
                         <span class="status-dot"></span>
                         <span>{{ user.username }}</span>
                     </div>
-                    <a class="btn btn-secondary" href="{% url 'logout' %}">Cerrar sesion</a>
+                    <form method="post" action="{% url 'logout' %}" class="logout-form">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-secondary">Cerrar sesion</button>
+                    </form>
                 {% else %}
                     <a class="btn btn-primary" href="{% url 'login' %}">Ingresar</a>
                 {% endif %}
