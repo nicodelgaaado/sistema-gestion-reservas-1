@@ -4,34 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Gestion de Reservas{% endblock %}</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
 </head>
 <body>
-    <header class="hero">
-        <div>
-            <p class="eyebrow">Ejercicio 1 - Django</p>
-            <h1>Sistema de Gestion de Reservas de Laboratorios</h1>
-            <p class="hero-copy">Controla reservas, roles, aprobaciones y reportes en una sola vista de trabajo.</p>
-        </div>
-        {% if user.is_authenticated %}
-            <div class="user-box">
-                <span>{{ user.username }}</span>
-                <a class="btn btn-light" href="{% url 'logout' %}">Cerrar sesion</a>
+    <div class="app-shell">
+        <header class="topbar">
+            <a class="brand" href="{% url 'inicio' %}">
+                <span class="brand-mark">GR</span>
+                <span>
+                    <strong>Gestion Reservas</strong>
+                    <small>Laboratorios academicos</small>
+                </span>
+            </a>
+            <nav class="nav-links">
+                <a class="{% if request.path == '/' %}is-active{% endif %}" href="{% url 'inicio' %}">Inicio</a>
+                <a class="{% if '/reservas/' in request.path and '/nueva/' not in request.path %}is-active{% endif %}" href="{% url 'reserva_lista' %}">Reservas</a>
+                {% if user.is_authenticated %}
+                    <a class="{% if request.path == '/reservas/nueva/' %}is-active{% endif %}" href="{% url 'reserva_crear' %}">Nueva solicitud</a>
+                {% endif %}
+            </nav>
+            <div class="topbar-actions">
+                {% if user.is_authenticated %}
+                    <div class="user-chip">
+                        <span class="status-dot"></span>
+                        <span>{{ user.username }}</span>
+                    </div>
+                    <a class="btn btn-secondary" href="{% url 'logout' %}">Cerrar sesion</a>
+                {% else %}
+                    <a class="btn btn-primary" href="{% url 'login' %}">Ingresar</a>
+                {% endif %}
             </div>
-        {% endif %}
-    </header>
+        </header>
 
-    <main class="page-shell">
-        {% if messages %}
-            <section class="messages">
-                {% for message in messages %}
-                    <article class="message {{ message.tags }}">{{ message }}</article>
-                {% endfor %}
-            </section>
-        {% endif %}
-        {% block content %}{% endblock %}
-    </main>
+        <main class="page-shell">
+            {% if messages %}
+                <section class="messages">
+                    {% for message in messages %}
+                        <article class="message {{ message.tags }}">{{ message }}</article>
+                    {% endfor %}
+                </section>
+            {% endif %}
+            {% block content %}{% endblock %}
+        </main>
+    </div>
 </body>
 </html>

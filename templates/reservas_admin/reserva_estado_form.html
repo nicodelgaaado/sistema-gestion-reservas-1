@@ -4,15 +4,15 @@
 
 {% block content %}
 <section class="card form-card">
-    <div>
-        <p class="eyebrow">Administracion</p>
+    <div class="card-heading">
+        <span class="section-tag">Administracion</span>
         <h2>Actualizar estado de la reserva</h2>
         <p>{{ object.usuario.username }} solicito {{ object.laboratorio }} el {{ object.fecha }} de {{ object.hora_inicio }} a {{ object.hora_fin }}.</p>
     </div>
     <form method="post" class="form-grid">
         {% csrf_token %}
         {% for field in form %}
-            <div>
+            <div class="field">
                 <label for="{{ field.id_for_label }}">{{ field.label }}</label>
                 {{ field }}
             </div>

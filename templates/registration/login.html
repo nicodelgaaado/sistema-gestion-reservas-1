@@ -3,24 +3,35 @@
 {% block title %}Iniciar sesion{% endblock %}
 
 {% block content %}
-<section class="card auth-card">
-    <div>
-        <p class="eyebrow">Acceso</p>
-        <h2>Ingresa al sistema</h2>
-        <p>Usa un usuario con rol docente o administrador para gestionar las reservas.</p>
-    </div>
-    <form method="post" class="form-grid">
-        {% csrf_token %}
-        {{ form.non_field_errors }}
-        <div>
-            <label for="{{ form.username.id_for_label }}">Usuario</label>
-            {{ form.username }}
+<section class="auth-layout">
+    <article class="card auth-card">
+        <div class="section-heading">
+            <span class="section-tag">Acceso al sistema</span>
+            <h1>Ingresa al entorno de gestion</h1>
+            <p>Usa tus credenciales para consultar reservas, crear solicitudes y administrar estados.</p>
         </div>
-        <div>
-            <label for="{{ form.password.id_for_label }}">Contrasena</label>
-            {{ form.password }}
-        </div>
-        <button type="submit" class="btn btn-primary">Entrar</button>
-    </form>
+        <form method="post" class="form-grid">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <div class="field">
+                <label for="{{ form.username.id_for_label }}">Usuario</label>
+                {{ form.username }}
+            </div>
+            <div class="field">
+                <label for="{{ form.password.id_for_label }}">Contrasena</label>
+                {{ form.password }}
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Entrar al sistema</button>
+        </form>
+    </article>
+    <aside class="card auth-aside">
+        <span class="section-tag">Resumen</span>
+        <h2>Un panel claro para la operacion diaria</h2>
+        <ul class="bullet-list">
+            <li>Control de reservas por laboratorio y fecha</li>
+            <li>Permisos diferenciados para docentes y administradores</li>
+            <li>Exportacion CSV para seguimiento academico</li>
+        </ul>
+    </aside>
 </section>
 {% endblock %}
