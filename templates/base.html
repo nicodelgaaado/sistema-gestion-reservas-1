@@ -21,7 +21,7 @@
             <nav class="nav-links">
                 <a class="{% if request.path == '/' %}is-active{% endif %}" href="{% url 'inicio' %}">Inicio</a>
                 <a class="{% if '/reservas/' in request.path and '/nueva/' not in request.path %}is-active{% endif %}" href="{% url 'reserva_lista' %}">Reservas</a>
-                {% if user.is_authenticated %}
+                {% if es_docente %}
                     <a class="{% if request.path == '/reservas/nueva/' %}is-active{% endif %}" href="{% url 'reserva_crear' %}">Nueva solicitud</a>
                 {% endif %}
             </nav>
